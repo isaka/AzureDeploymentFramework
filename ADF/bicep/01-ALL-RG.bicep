@@ -6,6 +6,9 @@
   'AWU2'
   'AWU3'
   'AWCU'
+  'UGAZ'
+  'UGTX'
+  'ASA1'
 ])
 param Prefix string
 
@@ -285,23 +288,23 @@ module dp_Deployment_DNSResolver 'DNSResolver.bicep' = if (bool(Stage.?DNSResolv
   ]
 }
 
-// /*
-// module dp_Deployment_CloudTestAccount 'CloudTestAccount.bicep' = if (bool(Stage.?CloudTestAccount ?? 0)) {
-//   name: 'dp${Deployment}-CloudTestAccount'
-//   params: {
-//     // move these to Splatting later
-//     DeploymentID: DeploymentID
-//     DeploymentInfo: DeploymentInfo
-//     Environment: Environment
-//     Extensions: Extensions
-//     Global: Global
-//     Prefix: Prefix
-//     Stage: Stage
-//   }
-//   dependsOn: [
-//     dp_Deployment_VNET
-//   ]
-// }
+/*
+module dp_Deployment_CloudTestAccount 'CloudTestAccount.bicep' = if (bool(Stage.?CloudTestAccount ?? 0)) {
+  name: 'dp${Deployment}-CloudTestAccount'
+  params: {
+    // move these to Splatting later
+    DeploymentID: DeploymentID
+    DeploymentInfo: DeploymentInfo
+    Environment: Environment
+    Extensions: Extensions
+    Global: Global
+    Prefix: Prefix
+    Stage: Stage
+  }
+  dependsOn: [
+    dp_Deployment_VNET
+  ]
+}
 
 // module dp_Deployment_CloudTestImages 'CloudTestImage.bicep' = if (bool(Stage.?CloudTestImages ?? 0)) {
 //   name: 'dp${Deployment}-CloudTestImages'
@@ -648,6 +651,59 @@ module dp_Deployment_TM 'TM.bicep' = if (bool(Stage.?TM ?? 0)) {
   ]
 }
 
+module dp_Deployment_AVDHostPool 'AVDHostPool.bicep' = if (bool(Stage.?AVDHostPool ?? 0)) {
+  name: 'dp${Deployment}-AVDHostPool'
+  params: {
+    // move these to Splatting later
+    DeploymentID: DeploymentID
+    DeploymentInfo: DeploymentInfo
+    Environment: Environment
+    Extensions: Extensions
+    Global: Global
+    Prefix: Prefix
+    Stage: Stage
+  }
+  dependsOn: [
+    dp_Deployment_OMS
+  ]
+}
+
+module dp_Deployment_ADVAppGroup 'AVDAppGroup.bicep' = if (bool(Stage.?AVDHostAppGroup ?? 0)) {
+  name: 'dp${Deployment}-AVDHostAppGroup'
+  params: {
+    // move these to Splatting later
+    DeploymentID: DeploymentID
+    DeploymentInfo: DeploymentInfo
+    Environment: Environment
+    Extensions: Extensions
+    Global: Global
+    Prefix: Prefix
+    Stage: Stage
+  }
+  dependsOn: [
+    dp_Deployment_OMS
+    dp_Deployment_AVDHostPool
+  ]
+}
+
+module dp_Deployment_WorkSpace 'AVDWorkspace.bicep' = if (bool(Stage.?AVDHostWorkSpace ?? 0)) {
+  name: 'dp${Deployment}-AVDHostWorkSpace'
+  params: {
+    // move these to Splatting later
+    DeploymentID: DeploymentID
+    DeploymentInfo: DeploymentInfo
+    Environment: Environment
+    Extensions: Extensions
+    Global: Global
+    Prefix: Prefix
+    Stage: Stage
+  }
+  dependsOn: [
+    dp_Deployment_OMS
+    dp_Deployment_ADVAppGroup
+  ]
+}
+
 // This is used for Promotion of Domain Controllers
 module dp_Deployment_VNETDNSPublic 'x.setVNET.bicep' = if (bool(Stage.?ADPrimary ?? 0) || bool(Stage.?CreateADPDC ?? 0)) {
   name: 'dp${Deployment}-VNETDNSPublic'
@@ -765,6 +821,7 @@ module AppServers 'VM.bicep' = if (bool(Stage.?VMApp ?? 0)) {
     dp_Deployment_LB
     // DNSLookup
     dp_Deployment_SA
+    dp_Deployment_AVDHostPool
   ]
 }
 

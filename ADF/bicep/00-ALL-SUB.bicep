@@ -6,6 +6,9 @@
   'AWU2'
   'AWU3'
   'AWCU'
+  'UGAZ'
+  'UGTX'
+  'ASA1'
 ])
 param Prefix string
 
