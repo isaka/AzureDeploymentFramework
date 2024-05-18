@@ -29,7 +29,7 @@
 
             AVDInstall                  = @(
                 @{
-                    PoolNameSuffix = 'BPO01'
+                    PoolNameSuffix = 'CLIENT01'
                     PackagePath    = 'C:\Source\AVD\Microsoft.RDInfra.RDAgent.Installer-x64-1.0.7539.8300.msi'
                     LogDirectory   = 'C:\Source\Logs\AVD'
                 }
