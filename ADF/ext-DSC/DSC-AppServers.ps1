@@ -23,21 +23,20 @@ Configuration $Configuration
     Import-DscResource -ModuleName ComputerManagementDsc
     Import-DscResource -ModuleName ActiveDirectoryDSC
     Import-DscResource -ModuleName StorageDsc
-    Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName WebAdministrationDSC
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -Name xRemoteFile, xPackage -ModuleVersion 9.1.0
     Import-DscResource -ModuleName SecurityPolicyDSC
     Import-DscResource -ModuleName xWindowsUpdate
-    Import-DscResource -ModuleName xDSCFirewall
+    Import-DscResource -ModuleName NetworkingDSC
     Import-DscResource -ModuleName NetworkingDSC
     Import-DscResource -ModuleName SQLServerDsc
     Import-DscResource -ModuleName xRemoteDesktopSessionHost
     Import-DscResource -ModuleName AccessControlDsc
     Import-DscResource -ModuleName PolicyFileEditor
-    Import-DscResource -ModuleName xSystemSecurity
     Import-DscResource -ModuleName DNSServerDSC
     Import-DscResource -ModuleName PackageManagementProviderResource
     Import-DscResource -ModuleName AZCOPYDSCDir         # https://github.com/brwilkinson/AZCOPYDSC
-    Import-DscResource -ModuleName WVDDSC               # https://github.com/brwilkinson/WVDDSC
+    Import-DscResource -ModuleName AVDDSC               # https://github.com/brwilkinson/WVDDSC
     Import-DscResource -ModuleName AppReleaseDSC        # https://github.com/brwilkinson/AppReleaseDSC
     Import-DscResource -ModuleName DevOpsAgentDSC       # https://github.com/brwilkinson/DevOpsAgentDSC
     Import-DscResource -ModuleName EnvironmentDSC       # https://github.com/brwilkinson/EnvironmentDSC
@@ -327,7 +326,8 @@ Configuration $Configuration
         #-------------------------------------------------------------------
         foreach ($RegistryKey in $Node.RegistryKeyPresent)
         {
-            Registry $RegistryKey.ValueName
+            $Name = $RegistryKey.Key -replace $StringFilter
+            Registry $Name
             {
                 Key                  = $RegistryKey.Key
                 ValueName            = $RegistryKey.ValueName
@@ -337,7 +337,7 @@ Configuration $Configuration
                 Force                = $true
                 PsDscRunAsCredential = $AdminCreds
             }
-            $dependsonRegistryKey += @("[Registry]$($RegistryKey.ValueName)")
+            $dependsonRegistryKey += @("[Registry]$Name")
         }
 
         #-------------------------------------------------------------------
@@ -392,7 +392,7 @@ Configuration $Configuration
             $dependsonDir += @("[File]$Name")
         }
 
-        #-------------------------------------------------------------------     
+        #-------------------------------------------------------------------
         foreach ($AZCOPYDSCDir in $Node.AZCOPYDSCDirPresentSource)
         {
             $Name = ($AZCOPYDSCDir.SourcePathBlobURI + '_' + $AZCOPYDSCDir.DestinationPath) -replace $StringFilter 
@@ -402,7 +402,7 @@ Configuration $Configuration
                 DestinationPath         = $AZCOPYDSCDir.DestinationPath
                 Ensure                  = 'Present'
                 ManagedIdentityClientID = $clientIDGlobal
-                LogDir                  = 'F:\azcopy_logs'
+                LogDir                  = $AZCOPYDSCDir.LogDir
             }
             $dependsonAZCopyDSCDir += @("[AZCOPYDSCDir]$Name")
         }
@@ -575,7 +575,7 @@ Configuration $Configuration
         foreach ($WebSite in $Node.WebSiteAbsent)
         {
             $Name = $WebSite.Name -replace ' ', ''
-            xWebsite $Name
+            Website $Name
             {
                 Name         = $WebSite.Name
                 Ensure       = 'Absent'
@@ -583,7 +583,7 @@ Configuration $Configuration
                 PhysicalPath = 'C:\inetpub\wwwroot'
                 DependsOn    = $dependsonFeatures
             }
-            $dependsonWebSitesAbsent += @("[xWebsite]$Name")
+            $dependsonWebSitesAbsent += @("[Website]$Name")
         }
 
         #-------------------------------------------------------------------
@@ -591,7 +591,7 @@ Configuration $Configuration
         { 
             $Name = $AppPool.Name -replace $StringFilter
 
-            xWebAppPool $Name
+            WebAppPool $Name
             {
                 Name                  = ($AppPool.Name -f $environment)
                 State                 = 'Started'
@@ -602,7 +602,7 @@ Configuration $Configuration
                 Credential            = $credlookup['DomainCreds']
                 enable32BitAppOnWin64 = $AppPool.enable32BitAppOnWin64
             }
-            $dependsonWebAppPool += @("[xWebAppPool]$Name")
+            $dependsonWebAppPool += @("[WebAppPool]$Name")
         }
 
         #-------------------------------------------------------------------
@@ -610,7 +610,7 @@ Configuration $Configuration
         {
             $Name = $WebSite.Name -replace $StringFilter
 
-            xWebsite $Name
+            Website $Name
             {
                 Name            = ($WebSite.Name -f $environment)
                 ApplicationPool = ($WebSite.ApplicationPool -f $environment)
@@ -619,7 +619,7 @@ Configuration $Configuration
                 DependsOn       = $dependsonWebAppPools
                 BindingInfo     = foreach ($Binding in $WebSite.BindingPresent)
                 {
-                    MSFT_xWebBindingInformation
+                    DSC_WebBindingInformation
                     {  
                         Protocol              = $binding.Protocol
                         Port                  = $binding.Port
@@ -630,13 +630,13 @@ Configuration $Configuration
                     }
                 }
             }
-            $dependsonWebSites += @("[xWebsite]$Name")
+            $dependsonWebSites += @("[Website]$Name")
         }
 
-        #------------------------------------------------------
+        # #------------------------------------------------------
         foreach ($WebVirtualDirectory in $Node.VirtualDirectoryPresent)
         {
-            xWebVirtualDirectory $WebVirtualDirectory.Name
+            WebVirtualDirectory $WebVirtualDirectory.Name
             {
                 Name                 = $WebVirtualDirectory.Name
                 PhysicalPath         = $WebVirtualDirectory.PhysicalPath
@@ -646,7 +646,7 @@ Configuration $Configuration
                 Ensure               = 'Present'
                 DependsOn            = $dependsonWebSites
             }
-            $dependsonWebVirtualDirectory += @("[xWebVirtualDirectory]$($WebVirtualDirectory.name)")
+            $dependsonWebVirtualDirectory += @("[WebVirtualDirectory]$($WebVirtualDirectory.name)")
         }
 
         # set virtual directory creds
@@ -695,7 +695,7 @@ Configuration $Configuration
         #------------------------------------------------------
         foreach ($WebApplication in $Node.WebApplicationsPresent)
         {
-            xWebApplication $WebApplication.Name
+            WebApplication $WebApplication.Name
             {
                 Name         = $WebApplication.Name
                 PhysicalPath = $WebApplication.PhysicalPath
@@ -704,7 +704,7 @@ Configuration $Configuration
                 Ensure       = 'Present'
                 DependsOn    = $dependsonWebSites
             }
-            $dependsonWebApplication += @("[xWebApplication]$($WebApplication.name)")
+            $dependsonWebApplication += @("[WebApplication]$($WebApplication.name)")
         }
 
         #-------------------------------------------------------------------
@@ -722,7 +722,7 @@ Configuration $Configuration
                 PsDscRunAsCredential = $credlookup['SQLService']
             }
 
-            $dependsonSQLScripts += @("[xSQLScript]$($Name)")
+            $dependsonSQLScripts += @("[SQLScript]$($Name)")
         }
 
         #-------------------------------------------------------------------
@@ -811,13 +811,14 @@ Configuration $Configuration
         }
 
         #-------------------------------------------------------------------
-        if ($Node.WVDInstall)
+        if ($Node.AVDInstall)
         {
-            WVDDSC RDInfraAgent
+            AVDDSC RDInfraAgent
             {
-                PoolNameSuffix          = $Node.WVDInstall.PoolNameSuffix
-                PackagePath             = $Node.WVDInstall.PackagePath
-                ManagedIdentityClientID = $AppInfo.ClientID
+                PoolNameSuffix          = $Node.AVDInstall.PoolNameSuffix
+                PackagePath             = $Node.AVDInstall.PackagePath
+                ManagedIdentityClientID = $clientIDGlobal
+                LogDirectory            = $Node.AVDInstall.LogDirectory
             }
         }
 
