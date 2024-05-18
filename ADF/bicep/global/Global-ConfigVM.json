@@ -5,7 +5,12 @@
       "DATA": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 32]],
+        "LUNS": [
+          [
+            0,
+            32
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       }
     },
@@ -13,7 +18,12 @@
       "DATA": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 64]],
+        "LUNS": [
+          [
+            0,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       }
     },
@@ -21,7 +31,12 @@
       "DATASS": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 64]],
+        "LUNS": [
+          [
+            0,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       }
     },
@@ -30,8 +45,14 @@
         "DriveLetter": "F",
         "caching": "ReadOnly",
         "LUNS": [
-          [0, 64],
-          [1, 64]
+          [
+            0,
+            64
+          ],
+          [
+            1,
+            64
+          ]
         ],
         "saType": "StandardSSD_LRS"
       }
@@ -40,7 +61,12 @@
       "DATA": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 128]],
+        "LUNS": [
+          [
+            0,
+            128
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       }
     },
@@ -48,15 +74,29 @@
       "DATA": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 64]],
+        "LUNS": [
+          [
+            0,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       },
       "SOFS": {
         "caching": "ReadOnly",
         "LUNS": [
-          [1, 32],
-          [2, 32],
-          [3, 32]
+          [
+            1,
+            32
+          ],
+          [
+            2,
+            32
+          ],
+          [
+            3,
+            32
+          ]
         ],
         "FileSystem": "ReFS",
         "saType": "StandardSSD_LRS"
@@ -66,30 +106,52 @@
       "DATA": {
         "DriveLetter": "F",
         "caching": "ReadOnly",
-        "LUNS": [[0, 64]],
+        "LUNS": [
+          [
+            0,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       },
       "LOGS": {
         "DriveLetter": "G",
         "caching": "None",
-        "LUNS": [[8, 64]],
+        "LUNS": [
+          [
+            8,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       },
       "TEMPDB": {
         "DriveLetter": "H",
         "caching": "ReadOnly",
-        "LUNS": [[12, 64]],
+        "LUNS": [
+          [
+            12,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       },
       "BACKUP": {
         "DriveLetter": "I",
         "caching": "None",
-        "LUNS": [[15, 64]],
+        "LUNS": [
+          [
+            15,
+            64
+          ]
+        ],
         "saType": "StandardSSD_LRS"
       }
     }
   },
   "computeSizeLookupOptions": {
+    "AVD-P": "Standard_B2ms",
+    "AVD-D": "Standard_B2ms",
     "API-P": "Standard_D2ads_v5",
     "API-D": "Standard_D4s_v3",
     "API-S": "Standard_D2s_v3",
@@ -132,6 +194,17 @@
     "FW-D": "Standard_F2"
   },
   "OSType": {
+    "Win11AVD02": {
+      "imageReference": {
+        "id": "/subscriptions/{subscriptionguid}/resourceGroups/ACU1-PE-AOA-RG-G1/providers/Microsoft.Compute/galleries/acu1brwaoag1gallery01/images/Win11AVD01"
+      },
+      "licenseType": "Windows_Client",
+      "OS": "Windows",
+      "OSDiskGB": 127,
+      "RoleExtensions": {
+        "chefClient": 0
+      }
+    },
     "Server2022SSIMG": {
       "imageReference": {
         "id": "/subscriptions/{subscriptionguid}/resourceGroups/ACU1-PE-AOA-RG-G1/providers/Microsoft.Compute/galleries/acu1brwaoag1gallery01/images/vmss2022"
@@ -258,6 +331,20 @@
         "WindowsOpenSSH": 0,
         "GuestHealthAgent": 0,
         "GuestConfig": 0
+      }
+    },
+    "Win11AVD": {
+      "imageReference": {
+        "publisher": "MicrosoftWindowsDesktop",
+        "offer": "windows-11",
+        "sku": "win11-23h2-avd",
+        "version": "latest"
+      },
+      "licenseType": "Windows_Client",
+      "OS": "Windows",
+      "OSDiskGB": 127,
+      "RoleExtensions": {
+        "chefClient": 0
       }
     },
     "Win10O365": {
