@@ -285,58 +285,58 @@ module dp_Deployment_DNSResolver 'DNSResolver.bicep' = if (bool(Stage.?DNSResolv
   ]
 }
 
-/*
-module dp_Deployment_CloudTestAccount 'CloudTestAccount.bicep' = if (bool(Stage.?CloudTestAccount ?? 0)) {
-  name: 'dp${Deployment}-CloudTestAccount'
-  params: {
-    // move these to Splatting later
-    DeploymentID: DeploymentID
-    DeploymentInfo: DeploymentInfo
-    Environment: Environment
-    Extensions: Extensions
-    Global: Global
-    Prefix: Prefix
-    Stage: Stage
-  }
-  dependsOn: [
-    dp_Deployment_VNET
-  ]
-}
+// /*
+// module dp_Deployment_CloudTestAccount 'CloudTestAccount.bicep' = if (bool(Stage.?CloudTestAccount ?? 0)) {
+//   name: 'dp${Deployment}-CloudTestAccount'
+//   params: {
+//     // move these to Splatting later
+//     DeploymentID: DeploymentID
+//     DeploymentInfo: DeploymentInfo
+//     Environment: Environment
+//     Extensions: Extensions
+//     Global: Global
+//     Prefix: Prefix
+//     Stage: Stage
+//   }
+//   dependsOn: [
+//     dp_Deployment_VNET
+//   ]
+// }
 
-module dp_Deployment_CloudTestImages 'CloudTestImage.bicep' = if (bool(Stage.?CloudTestImages ?? 0)) {
-  name: 'dp${Deployment}-CloudTestImages'
-  params: {
-    // move these to Splatting later
-    DeploymentID: DeploymentID
-    DeploymentInfo: DeploymentInfo
-    Environment: Environment
-    Extensions: Extensions
-    Global: Global
-    Prefix: Prefix
-    Stage: Stage
-  }
-  dependsOn: [
-    dp_Deployment_VNET
-  ]
-}
+// module dp_Deployment_CloudTestImages 'CloudTestImage.bicep' = if (bool(Stage.?CloudTestImages ?? 0)) {
+//   name: 'dp${Deployment}-CloudTestImages'
+//   params: {
+//     // move these to Splatting later
+//     DeploymentID: DeploymentID
+//     DeploymentInfo: DeploymentInfo
+//     Environment: Environment
+//     Extensions: Extensions
+//     Global: Global
+//     Prefix: Prefix
+//     Stage: Stage
+//   }
+//   dependsOn: [
+//     dp_Deployment_VNET
+//   ]
+// }
 
-module dp_Deployment_CloudTestHostedPool 'CloudTestDevOpsPool.bicep' = if (bool(Stage.?CloudTestHostedPool ?? 0)) {
-  name: 'dp${Deployment}-CloudTestHostedPool'
-  params: {
-    // move these to Splatting later
-    DeploymentID: DeploymentID
-    DeploymentInfo: DeploymentInfo
-    Environment: Environment
-    Extensions: Extensions
-    Global: Global
-    Prefix: Prefix
-    Stage: Stage
-  }
-  dependsOn: [
-    dp_Deployment_VNET
-  ]
-}
-*/
+// module dp_Deployment_CloudTestHostedPool 'CloudTestDevOpsPool.bicep' = if (bool(Stage.?CloudTestHostedPool ?? 0)) {
+//   name: 'dp${Deployment}-CloudTestHostedPool'
+//   params: {
+//     // move these to Splatting later
+//     DeploymentID: DeploymentID
+//     DeploymentInfo: DeploymentInfo
+//     Environment: Environment
+//     Extensions: Extensions
+//     Global: Global
+//     Prefix: Prefix
+//     Stage: Stage
+//   }
+//   dependsOn: [
+//     dp_Deployment_VNET
+//   ]
+// }
+// */
 
 module dp_Deployment_KV 'KV.bicep' = if (bool(Stage.KV)) {
   name: 'dp${Deployment}-KV'
@@ -590,26 +590,26 @@ module dp_Deployment_SFM 'SFM.bicep' = if (bool(Stage.?SFM ?? 0)) {
   ]
 }
 
-module dp_Deployment_SFMNP 'SFMNP.bicep' = if (bool(Stage.?SFMNP ?? 0)) {
-  name: 'dp${Deployment}-SFMNP'
-  params: {
-    // move these to Splatting later
-    DeploymentID: DeploymentID
-    DeploymentInfo: DeploymentInfo
-    Environment: Environment
-    Extensions: Extensions
-    Global: Global
-    Prefix: Prefix
-    Stage: Stage
-  }
-  dependsOn: [
-    dp_Deployment_VNET
-    dp_Deployment_DNSResolver
-    dp_Deployment_LB
-    dp_Deployment_SFM
-    dp_Deployment_APPCONFIG
-  ]
-}
+// module dp_Deployment_SFMNP 'SFMNP.bicep' = if (bool(Stage.?SFMNP ?? 0)) {
+//   name: 'dp${Deployment}-SFMNP'
+//   params: {
+//     // move these to Splatting later
+//     DeploymentID: DeploymentID
+//     DeploymentInfo: DeploymentInfo
+//     Environment: Environment
+//     Extensions: Extensions
+//     Global: Global
+//     Prefix: Prefix
+//     Stage: Stage
+//   }
+//   dependsOn: [
+//     dp_Deployment_VNET
+//     dp_Deployment_DNSResolver
+//     dp_Deployment_LB
+//     dp_Deployment_SFM
+//     dp_Deployment_APPCONFIG
+//   ]
+// }
 
 module dp_Deployment_KVCert 'KVCertificate.bicep' = if (bool(Stage.?KVCert ?? 0)) {
   name: 'dp${Deployment}-KVCertificate'

@@ -123,6 +123,7 @@ resource VNETDiagnostics 'microsoft.insights/diagnosticSettings@2017-05-01-previ
   }
   dependsOn: [
     VNETAll
+    VNET
   ]
 }
 
@@ -145,6 +146,7 @@ resource VNETPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2
   }
   dependsOn: [
     VNETAll
+    VNETDiagnostics
   ]
 }
 
@@ -160,8 +162,9 @@ module VNETPeeringHUB 'VNET-Peering.bicep' = if (bool(Stage.VNetPeering)) {
   }
   dependsOn: [
     VNETAll
+    VNETPeering
   ]
 }
 
 output VNetID array = addressPrefixes
-output subnetIdArray array = [for (item, index) in SubnetInfo: VNET.properties.subnets[index].id]
+// output subnetIdArray array = [for (item, index) in SubnetInfo: VNET.properties.subnets[index].id]

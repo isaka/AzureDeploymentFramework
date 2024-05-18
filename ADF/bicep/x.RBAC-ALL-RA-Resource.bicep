@@ -22,6 +22,7 @@ param roledescription string = '' // leave these for logging in the portal
 // var resourceid =  join(string(segment)), '","', ''), '["', ''), '"]', '') // currently no join() method
 // // ----------------------------------------------
 
+#disable-next-line no-deployments-resources
 resource ResourceRoleAssignment 'Microsoft.Resources/deployments@2021-04-01' = {
     name: take('dp-RRA-${description}-${last(split(resourceId,'/'))}',64)
     properties: {

@@ -28,9 +28,10 @@ AzSet -App $App -Enviro D1
 
 # Global - Only Needed in secondary Region
 AzDeploy @Current -Prefix ACU1 -TF ADF:/bicep/00-ALL-SUB.bicep
-AzDeploy @Current -Prefix ACU1 -TF ADF:/bicep/01-ALL-RG.bicep
+AzDeploy @Current -Prefix ACU1 -TF ADF:/bicep/01-ALL-RG.bicep -WhatIf
 
 # Deploy only AKS layer for testing.
+AzDeploy @Current -Prefix ACU1 -TF ADF:/bicep/WAF.bicep
 AzDeploy @Current -Prefix ACU1 -TF ADF:/bicep/AKS.bicep
 
 # Repeat above for other environments, however can do those in yaml pipelines instead

@@ -47,6 +47,7 @@ var fileShares = contains(storageInfo, 'fileShares') ? storageInfo.fileShares : 
 var containers = contains(storageInfo, 'containers') ? storageInfo.containers : []
 
 resource SA 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+  #disable-next-line BCP334
   name: toLower('${DeploymentURI}sa${storageInfo.name}')
   location: resourceGroup().location
   sku: {

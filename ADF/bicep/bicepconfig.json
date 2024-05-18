@@ -1,10 +1,11 @@
 {
   "experimentalFeaturesEnabled": {
-    // "paramsFiles": false, // now GA
-    // "extensibility": true,
-    // "resourceTypedParamsAndOutputs": false,
-    // "userDefinedTypes": false,
-    // "symbolicNameCodegen": true
+    "extensibility": true,
+    "compileTimeImports": true,
+    "symbolicNameCodegen": true,
+    "userDefinedFunctions": true,
+    "resourceTypedParamsAndOutputs": true,
+    "prettyPrinting": true
   },
   "analyzers": {
     "core": {

@@ -1,4 +1,6 @@
+<#
 #requires -Modules Az.Accounts,Az.KeyVault,Az.ServiceFabric
+#>
 
 function validateTenant
 {
@@ -393,9 +395,11 @@ function Set-ADOSFMServiceConnection
 
 function Set-ADOAZServiceConnection
 {
-    #Requires -Module Microsoft.Graph.Applications
-    #Requires -Module Microsoft.Graph.Authentication
-    #Requires -Module AZ.Accounts
+<#
+    # Requires -Module Microsoft.Graph.Applications
+    # Requires -Module Microsoft.Graph.Authentication
+    # Requires -Module AZ.Accounts
+#>
 
     param (
         [ValidateSet('ACU1', 'AEU2', 'AEU1', 'AWCU')]
@@ -726,10 +730,11 @@ function Set-ADOServiceConnectionAdmin
 
 function New-ADOAZServiceConnection
 {
+<#
     #Requires -Module Microsoft.Graph.Applications
     #Requires -Module Microsoft.Graph.Authentication
     #Requires -Module AZ.Accounts
-
+#>
     <#
     .SYNOPSIS
         Generate a new AZ Service Connection

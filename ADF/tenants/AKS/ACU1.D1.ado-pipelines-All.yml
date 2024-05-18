@@ -4,7 +4,7 @@ trigger: none
   #   include: [ main ]
   # paths:
   #   include:
-  #   - ADF/tenants/AKS/ACU1.D1.parameters.json
+  #   - ADF/tenants/AKS/ACU1.D1.bicepparam
   #   - ADF/tenants/AKS/ACU1.D1.ado-pipelines-All.yml
 
 variables:
